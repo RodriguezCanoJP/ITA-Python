@@ -3,7 +3,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import csv
 
-
+#Compares two strings and returns an int
 def comparator(str1, str2):
     if str1.lower() > str2.lower():
         return 1
@@ -12,15 +12,17 @@ def comparator(str1, str2):
     else:
         return 0
     
-
+#http request
 response = requests.get("https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=kYfQWtOOA0NIY4OcSLtk5kiYos4htK5d")
 
+#print status
 print(response)
 info = response.json()
 results = info['results']
-ordered_results = []
+
 keys = [key for key in results[0].keys()]
 
+#swaps items if comparator returns 1
 for i in range(len(results)):
     for j in range(len(results)):
         if comparator(results[i]['title'], results[j]['title']) == 1:
@@ -30,7 +32,7 @@ for i in range(len(results)):
         else:
             continue
 
-
+#writes csv file
 with open("output.csv", "w") as file:
     csv_file = csv.writer(file)
     csv_file.writerow(keys)
